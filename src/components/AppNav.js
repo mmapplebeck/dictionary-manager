@@ -4,7 +4,11 @@ import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { getDictionaryNames } from "../selectors";
 
 import AddDictionaryButton from "./AddDictionaryButton";
 import { drawerWidth } from "./App";
@@ -22,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function AppNav({ handleDrawerToggle, mobileOpen }) {
+function AppNav({ handleDrawerToggle, mobileOpen, dictionaryNames }) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -32,8 +36,13 @@ function AppNav({ handleDrawerToggle, mobileOpen }) {
       <Divider />
       <List>
         <AddDictionaryButton />
+        <Divider />
+        {dictionaryNames.map(name => (
+          <ListItem button key={name}>
+            <ListItemText primary={name} />
+          </ListItem>
+        ))}
       </List>
-      <Divider />
     </div>
   );
 
@@ -76,4 +85,6 @@ AppNav.propTypes = {
   mobileOpen: PropTypes.bool.isRequired
 };
 
-export default AppNav;
+export default connect(state => ({
+  dictionaryNames: getDictionaryNames(state)
+}))(AppNav);
