@@ -1,11 +1,11 @@
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppHeader from "./AppHeader";
-import AppNav from "./AppNav";
-
-export const drawerWidth = 240;
+import Dictionaries from "./Dictionaries";
+import DictionaryOrRedirect from "./DictionaryOrRedirect";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,22 +20,25 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const classes = useStyles();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppHeader onClick={handleDrawerToggle} />
-      <AppNav handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
-
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-      </main>
-    </div>
+    <Router>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppHeader />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Switch>
+            <Route path={`/:name`}>
+              <DictionaryOrRedirect />
+            </Route>
+            <Route>
+              <Dictionaries />
+            </Route>
+          </Switch>
+        </main>
+      </div>
+    </Router>
   );
 }
 

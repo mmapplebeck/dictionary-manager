@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import ImmutablePropTypes from "react-immutable-proptypes";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -7,22 +8,34 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme, makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { addDictionary } from "../actions";
 
-function AddDictionaryButton({ addDictionary }) {
+import { addDictionary } from "../actions";
+import { getDictionaryNames } from "../selectors";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    marginTop: theme.spacing(1)
+  },
+  addIcon: {
+    marginRight: theme.spacing(1)
+  }
+}));
+
+function AddDictionaryButton({ addDictionary, dictionaryNames }) {
   const [name, setName] = useState("");
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const classes = useStyles();
+
+  const isUniqueDictionaryName = name => !dictionaryNames.contains(name);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,37 +53,37 @@ function AddDictionaryButton({ addDictionary }) {
   };
 
   const handleSubmit = () => {
-    setError(validate(name));
+    setError(validate(name.trim()));
     setSubmitting(true);
+  };
+
+  const submit = useCallback(() => {
+    addDictionary(name.trim());
+    handleClose();
+  }, [name, addDictionary]);
+
+  const validate = name => {
+    let error = "";
+    if (!name) {
+      error = "Name must not be blank.";
+    } else if (!isUniqueDictionaryName(name)) {
+      error = "That name is already taken. Please use a unique name.";
+    }
+    return error;
   };
 
   useEffect(() => {
     if (!error && submitting) {
       submit();
     }
-  }, [error]);
-
-  function submit() {
-    addDictionary(name);
-    handleClose();
-  }
-
-  function validate() {
-    let error = "";
-    if (!name) {
-      error = "Name must not be blank.";
-    }
-    return error;
-  }
+  }, [error, submit, submitting]);
 
   return (
-    <div>
-      <ListItem button onClick={handleClickOpen}>
-        <ListItemIcon>
-          <AddIcon />
-        </ListItemIcon>
-        <ListItemText primary="Add Dictionary" />
-      </ListItem>
+    <div className={classes.root}>
+      <Fab color="primary" variant="extended" onClick={handleClickOpen}>
+        <AddIcon className={classes.addIcon} />
+        Add Dictionary
+      </Fab>
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -111,9 +124,15 @@ function AddDictionaryButton({ addDictionary }) {
 }
 
 AddDictionaryButton.propTypes = {
-  addDictionary: PropTypes.func.isRequired
+  addDictionary: PropTypes.func.isRequired,
+  dictionaryNames: ImmutablePropTypes.listOf(PropTypes.string).isRequired
 };
 
-export default connect(null, dispatch => ({
-  addDictionary: name => dispatch(addDictionary(name))
-}))(AddDictionaryButton);
+export default connect(
+  state => ({
+    dictionaryNames: getDictionaryNames(state)
+  }),
+  dispatch => ({
+    addDictionary: name => dispatch(addDictionary(name))
+  })
+)(AddDictionaryButton);

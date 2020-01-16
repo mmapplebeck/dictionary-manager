@@ -3,14 +3,12 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
-import rootReducer from "./reducers";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
 import { Map } from "immutable";
 
-const initialState = Map();
-const store = createStore(rootReducer, initialState, composeWithDevTools());
+import configureStore from "./configureStore";
+
+const store = configureStore(Map());
 
 ReactDOM.render(
   <Provider store={store}>

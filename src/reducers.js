@@ -17,8 +17,9 @@ function dictionaries(state = List(), action) {
   }
 }
 
-const rootReducer = combineReducers({
-  dictionaries
-});
+const createRootReducer = () =>
+  combineReducers({
+    dictionaries
+  });
 
-export default rootReducer;
+export default createRootReducer;
