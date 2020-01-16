@@ -11,7 +11,7 @@ function DictionaryOrRedirect({ dictionary }) {
   if (!dictionary) {
     return <Redirect to="/" />;
   }
-  return <Dictionary name={dictionary.name} data={dictionary.data} />;
+  return <Dictionary />;
 }
 
 DictionaryOrRedirect.propTypes = {

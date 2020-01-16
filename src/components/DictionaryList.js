@@ -15,7 +15,7 @@ function DictionaryList({ dictionaries }) {
     <>
       {!dictionaries.size && (
         <Typography variant="body1" color="textSecondary" gutterBottom>
-          You have no dictionaries yet. Add a dictionary to start editing.
+          You have no dictionaries. Add a dictionary to start editing.
         </Typography>
       )}
       {dictionaries.size > 0 && (

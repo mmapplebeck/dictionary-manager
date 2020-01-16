@@ -4,7 +4,7 @@ export const getDictionaries = state => state.get("dictionaries");
 
 export const getDictionaryNames = createSelector(
   getDictionaries,
-  dictionaries => dictionaries.map(d => d.get("name"))
+  dictionaries => dictionaries.map(d => d.name)
 );
 
 export const getLatestDictionary = createSelector(
@@ -16,5 +16,5 @@ export const getDictionaryByUrl = createSelector(
   getDictionaries,
   (__, name) => name,
   (dictionaries, name) =>
-    dictionaries.find(d => d.get("name") === decodeURIComponent(name))
+    dictionaries.find(d => d.name === decodeURIComponent(name))
 );

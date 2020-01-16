@@ -1,8 +1,8 @@
-import { Record, Map } from "immutable";
+import { Record, List } from "immutable";
 
 export const Dictionary = Record({
   name: "",
-  data: Map()
+  items: List()
 });
 
 export default Dictionary;
