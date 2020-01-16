@@ -2,7 +2,7 @@ import { List } from "immutable";
 import { combineReducers } from "redux-immutable";
 
 import Dictionary from "./models/Dictionary";
-import { ADD_DICTIONARY } from "./actions";
+import { ADD_DICTIONARY, DELETE_DICTIONARY } from "./actions";
 
 function dictionaries(state = List(), action) {
   switch (action.type) {
@@ -12,6 +12,8 @@ function dictionaries(state = List(), action) {
           name: action.payload
         })
       );
+    case DELETE_DICTIONARY:
+      return state.filter(d => d.name !== action.payload);
     default:
       return state;
   }

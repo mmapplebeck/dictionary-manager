@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AppHeader from "./AppHeader";
 import Page from "./Page";
-import Dictionaries from "./Dictionaries";
+import DictionaryList from "./DictionaryList";
 import DictionaryOrRedirect from "./DictionaryOrRedirect";
 
 const useStyles = makeStyles(theme => ({
@@ -40,7 +40,7 @@ function App() {
             />
             <Route>
               <Page heading="Dictionaries">
-                <Dictionaries />
+                <DictionaryList />
               </Page>
             </Route>
           </Switch>
