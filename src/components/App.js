@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppHeader from "./AppHeader";
+import Page from "./Page";
 import Dictionaries from "./Dictionaries";
 import DictionaryOrRedirect from "./DictionaryOrRedirect";
 
@@ -29,11 +30,18 @@ function App() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            <Route path={`/:name`}>
-              <DictionaryOrRedirect />
-            </Route>
+            <Route
+              path={`/:name`}
+              render={({ match }) => (
+                <Page heading={`${match.params.name} Dictionary`}>
+                  <DictionaryOrRedirect />
+                </Page>
+              )}
+            />
             <Route>
-              <Dictionaries />
+              <Page heading="Dictionaries">
+                <Dictionaries />
+              </Page>
             </Route>
           </Switch>
         </main>
