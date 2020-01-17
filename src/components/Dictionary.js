@@ -89,7 +89,7 @@ function OptionalErrorIcon({ item }) {
 }
 
 OptionalErrorIcon.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object
 };
 
 const blankFieldError = "Field cannot be blank";

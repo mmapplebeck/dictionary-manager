@@ -44,7 +44,7 @@ function DictionaryList({ dictionaries }) {
         <>
           <Divider className={classes.emptyTextDivider} />
           <Grid container justify="center">
-            <Typography variant="body" className={classes.emptyText}>
+            <Typography variant="body2" className={classes.emptyText}>
               You have no dictionaries. Add a dictionary to start editing.
             </Typography>
           </Grid>
