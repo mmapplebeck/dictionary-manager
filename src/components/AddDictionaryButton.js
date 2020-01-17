@@ -8,8 +8,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme, makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -20,9 +21,6 @@ import { getDictionaryNames } from "../selectors";
 const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(1)
-  },
-  addIcon: {
-    marginRight: theme.spacing(1)
   }
 }));
 
@@ -80,10 +78,11 @@ function AddDictionaryButton({ addDictionary, dictionaryNames }) {
 
   return (
     <div className={classes.root}>
-      <Fab color="primary" variant="extended" onClick={handleClickOpen}>
-        <AddIcon className={classes.addIcon} />
-        Add Dictionary
-      </Fab>
+      <Tooltip title="Add" aria-label="add">
+        <IconButton onClick={handleClickOpen}>
+          <AddBoxIcon />
+        </IconButton>
+      </Tooltip>
       <Dialog
         fullScreen={fullScreen}
         open={open}

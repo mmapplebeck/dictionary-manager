@@ -88,6 +88,10 @@ function OptionalErrorIcon({ item }) {
   );
 }
 
+OptionalErrorIcon.propTypes = {
+  item: PropTypes.object.isRequired
+};
+
 const blankFieldError = "Field cannot be blank";
 
 function Dictionary({
