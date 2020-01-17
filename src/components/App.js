@@ -2,17 +2,13 @@ import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Link from "@material-ui/core/Link";
-import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppHeader from "./AppHeader";
 import Page from "./Page";
 import DictionaryList from "./DictionaryList";
 import DictionaryOrRedirect from "./DictionaryOrRedirect";
-import DeleteDictionaryButton from "./DeleteDictionaryButton";
+import DictionaryHeader from "./DictionaryHeader";
 import PageHeading from "./PageHeading";
 
 const useStyles = makeStyles(theme => ({
@@ -24,9 +20,6 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     flexGrow: 1,
     padding: theme.spacing(3)
-  },
-  breadcrumbs: {
-    marginBottom: theme.spacing(1)
   },
   header: {
     marginBottom: theme.spacing(1)
@@ -47,34 +40,7 @@ function App() {
             <Route
               path={`/:name`}
               render={({ match }) => (
-                <Page
-                  header={
-                    <>
-                      <Breadcrumbs
-                        aria-label="breadcrumb"
-                        className={classes.breadcrumbs}
-                      >
-                        <Link component={RouterLink} color="inherit" to="/">
-                          Dictionaries
-                        </Link>
-                        <Typography color="textPrimary">
-                          {match.params.name}
-                        </Typography>
-                      </Breadcrumbs>
-                      <Grid
-                        container
-                        justify="space-between"
-                        alignItems="center"
-                        className={classes.header}
-                      >
-                        <PageHeading
-                          heading={`${match.params.name} Dictionary`}
-                        />
-                        <DeleteDictionaryButton name={match.params.name} />
-                      </Grid>
-                    </>
-                  }
-                >
+                <Page header={<DictionaryHeader name={match.params.name} />}>
                   <DictionaryOrRedirect />
                 </Page>
               )}

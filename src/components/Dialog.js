@@ -8,14 +8,14 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 
-function Dialog({ open, title, description, content, actions, handleClose }) {
+function Dialog({ open, title, description, content, actions, onClose }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <MuiDialog
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       aria-labelledby="dialog-title"
       aria-describedby="dialog-description"
       fullScreen={fullScreen}
@@ -36,6 +36,7 @@ Dialog.propTypes = {
   open: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   actions: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
   description: PropTypes.string,
   content: PropTypes.node
 };
