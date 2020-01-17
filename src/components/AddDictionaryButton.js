@@ -3,35 +3,20 @@ import ImmutablePropTypes from "react-immutable-proptypes";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme, makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 
+import Dialog from "./Dialog";
 import { addDictionary } from "../actions";
 import { getDictionaryNames } from "../selectors";
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginTop: theme.spacing(1)
-  }
-}));
 
 function AddDictionaryButton({ addDictionary, dictionaryNames }) {
   const [name, setName] = useState("");
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const classes = useStyles();
 
   const isUniqueDictionaryName = name => !dictionaryNames.contains(name);
 
@@ -77,24 +62,17 @@ function AddDictionaryButton({ addDictionary, dictionaryNames }) {
   }, [error, submit, submitting]);
 
   return (
-    <div className={classes.root}>
+    <>
       <Tooltip title="Add" aria-label="add">
         <IconButton onClick={handleClickOpen}>
           <AddBoxIcon />
         </IconButton>
       </Tooltip>
       <Dialog
-        fullScreen={fullScreen}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">Add Dictionary</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Once you create your new dictionary, you will be able to add items
-            to it.
-          </DialogContentText>
+        title="Add Dictionary"
+        description="Once you create your new dictionary, you will be able to add items
+        to it."
+        content={
           <TextField
             required
             autoFocus
@@ -108,17 +86,21 @@ function AddDictionaryButton({ addDictionary, dictionaryNames }) {
             error={!!error}
             helperText={error}
           />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Create
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        }
+        actions={
+          <>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} color="primary">
+              Create
+            </Button>
+          </>
+        }
+        open={open}
+        onClose={handleClose}
+      />
+    </>
   );
 }
 

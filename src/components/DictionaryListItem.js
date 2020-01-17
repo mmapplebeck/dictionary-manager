@@ -5,13 +5,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
 import DictionaryIcon from "@material-ui/icons/Description";
-import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 
-import { deleteDictionary } from "../actions";
+import DeleteDictionaryButton from "./DeleteDictionaryButton";
 import { getDictionaryRoute } from "../routes";
 
 function DictionaryListItem({ name, deleteDictionary }) {
@@ -24,19 +21,14 @@ function DictionaryListItem({ name, deleteDictionary }) {
       </ListItemAvatar>
       <ListItemText primary={name} />
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete" onClick={deleteDictionary}>
-          <DeleteIcon />
-        </IconButton>
+        <DeleteDictionaryButton name={name} />
       </ListItemSecondaryAction>
     </ListItem>
   );
 }
 
 DictionaryListItem.propTypes = {
-  name: PropTypes.string.isRequired,
-  deleteDictionary: PropTypes.func.isRequired
+  name: PropTypes.string.isRequired
 };
 
-export default connect(null, (dispatch, { name }) => ({
-  deleteDictionary: () => dispatch(deleteDictionary(name))
-}))(DictionaryListItem);
+export default DictionaryListItem;

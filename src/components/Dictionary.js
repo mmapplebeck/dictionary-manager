@@ -107,84 +107,82 @@ function Dictionary({
   );
 
   return (
-    <>
-      <MaterialTable
-        options={{
-          showTitle: false,
-          paging: false,
-          search: dictionary.items.size > 0,
-          actionsColumnIndex: 2
-        }}
-        components={{
-          Container: props => <div {...props}></div>,
-          Add: props => (
-            <Fab color="primary" {...props}>
-              <AddIcon />
-            </Fab>
-          ),
-          EditField: props => {
-            const { value } = props;
-            const shouldShowError = !value;
-            return (
-              <MTableEditField
-                {...props}
-                error={shouldShowError}
-                helperText={shouldShowError && blankFieldError}
-              />
-            );
-          }
-        }}
-        icons={tableIcons}
-        columns={[
-          { title: "Domain", field: "domain" },
-          { title: "Range", field: "range" },
-          {
-            field: "error",
-            editable: "never",
-            render: item => <OptionalErrorIcon item={item} />
-          }
-        ]}
-        localization={{
-          body: {
-            emptyDataSourceMessage:
-              "You have no dictionary items. Create an item to start populating this dictionary."
-          },
-          header: {
-            actions: ""
-          }
-        }}
-        data={itemsAsArrayWithErrors}
-        editable={{
-          onRowAdd: ({ domain, range }) =>
-            new Promise((resolve, reject) => {
-              if (!domain || !range) {
-                // Maintain edit mode if there is a blank field
-                reject();
-              } else {
-                addDictionaryItem(dictionary.name, domain, range);
-                resolve();
-              }
-            }),
-          onRowUpdate: ({ domain, range }, oldData) =>
-            new Promise((resolve, reject) => {
-              if (!domain || !range) {
-                // Maintain edit mode if there is a blank field
-                reject();
-              } else {
-                const index = itemsAsArrayWithErrors.indexOf(oldData);
-                updateDictionaryItem(dictionary.name, index, domain, range);
-                resolve();
-              }
-            }),
-          onRowDelete: oldData =>
-            new Promise((resolve, reject) => {
-              const index = itemsAsArrayWithErrors.indexOf(oldData);
-              deleteDictionaryItem(dictionary.name, index);
+    <MaterialTable
+      options={{
+        showTitle: false,
+        paging: false,
+        search: dictionary.items.size > 0,
+        actionsColumnIndex: 2
+      }}
+      components={{
+        Container: props => <div {...props}></div>,
+        Add: props => (
+          <Fab color="primary" {...props}>
+            <AddIcon />
+          </Fab>
+        ),
+        EditField: props => {
+          const { value } = props;
+          const shouldShowError = !value;
+          return (
+            <MTableEditField
+              {...props}
+              error={shouldShowError}
+              helperText={shouldShowError && blankFieldError}
+            />
+          );
+        }
+      }}
+      icons={tableIcons}
+      columns={[
+        { title: "Domain", field: "domain" },
+        { title: "Range", field: "range" },
+        {
+          field: "error",
+          editable: "never",
+          render: item => <OptionalErrorIcon item={item} />
+        }
+      ]}
+      localization={{
+        body: {
+          emptyDataSourceMessage:
+            "You have no dictionary items. Create an item to start populating this dictionary."
+        },
+        header: {
+          actions: ""
+        }
+      }}
+      data={itemsAsArrayWithErrors}
+      editable={{
+        onRowAdd: ({ domain, range }) =>
+          new Promise((resolve, reject) => {
+            if (!domain || !range) {
+              // Maintain edit mode if there is a blank field
+              reject();
+            } else {
+              addDictionaryItem(dictionary.name, domain, range);
               resolve();
-            })
-        }}
-      />
-    </>
+            }
+          }),
+        onRowUpdate: ({ domain, range }, oldData) =>
+          new Promise((resolve, reject) => {
+            if (!domain || !range) {
+              // Maintain edit mode if there is a blank field
+              reject();
+            } else {
+              const index = itemsAsArrayWithErrors.indexOf(oldData);
+              updateDictionaryItem(dictionary.name, index, domain, range);
+              resolve();
+            }
+          }),
+        onRowDelete: oldData =>
+          new Promise((resolve, reject) => {
+            const index = itemsAsArrayWithErrors.indexOf(oldData);
+            deleteDictionaryItem(dictionary.name, index);
+            resolve();
+          })
+      }}
+    />
   );
 }
 
