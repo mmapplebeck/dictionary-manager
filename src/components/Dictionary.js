@@ -6,6 +6,7 @@ import AddIcon from "@material-ui/icons/Add";
 import ErrorIcon from "@material-ui/icons/Error";
 import WarningIcon from "@material-ui/icons/Warning";
 import MaterialTable, { MTableEditField } from "material-table";
+import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -72,7 +73,26 @@ const addErrors = items => {
   }));
 };
 
+const useStyles = makeStyles(theme => {
+  const errorColor = theme.palette.error.dark;
+  const warningColor = theme.palette.warning.dark;
+  const isError = item =>
+    item && item.error && item.error.level === ErrorLevels.error;
+
+  return {
+    chip: props => ({
+      color: isError(props.item) ? errorColor : warningColor,
+      borderColor: isError(props.item) ? errorColor : warningColor
+    }),
+    icon: props => ({
+      color: isError(props.item) ? errorColor : warningColor
+    })
+  };
+});
+
 function OptionalErrorIcon({ item }) {
+  const classes = useStyles();
+
   if (!item || !item.error) {
     return null;
   }
@@ -80,10 +100,15 @@ function OptionalErrorIcon({ item }) {
   return (
     <Chip
       icon={
-        item.error.level === ErrorLevels.error ? <ErrorIcon /> : <WarningIcon />
+        item.error.level === ErrorLevels.error ? (
+          <ErrorIcon className={classes.icon} />
+        ) : (
+          <WarningIcon className={classes.icon} />
+        )
       }
       label={item.error.name}
       variant="outlined"
+      className={classes.chip}
     />
   );
 }
