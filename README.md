@@ -1,4 +1,11 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Dictionary Manager
+
+A single page application to create dictionaries containing domain range mappings.
+
+## Live Demo
+
+This project build is hosted on Github pages: https://mmapplebeck.github.io/dictionary-manager/
+The project is built and deployed to this repo's [gh-pages branch](https://github.com/mmapplebeck/dictionary-manager/tree/gh-pages) using [gh-pages](https://github.com/tschaub/gh-pages).
 
 ## Available Scripts
 
