@@ -8,11 +8,7 @@ import ErrorSummary from "./ErrorSummary";
 import ErrorChip from "./ErrorChip";
 import tableIcons from "../tableIcons";
 import DictionaryModel from "../models/Dictionary";
-import {
-  getDictionaryByName,
-  getErrorCount,
-  getWarningCount
-} from "../selectors";
+import { getDictionaryByName } from "../selectors";
 import {
   addDictionaryItem,
   updateDictionaryItem,
