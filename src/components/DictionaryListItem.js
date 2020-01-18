@@ -6,8 +6,9 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import DictionaryIcon from "@material-ui/icons/Description";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import DeleteDictionaryButton from "./DeleteDictionaryButton";
 import { getDictionaryRoute } from "../routes";
@@ -25,6 +26,8 @@ const useStyles = makeStyles(theme => ({
 
 function DictionaryListItem({ name, deleteDictionary }) {
   const classes = useStyles();
+  const theme = useTheme();
+  const showErrorSummary = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
     <ListItem button component={Link} to={getDictionaryRoute(name)}>
@@ -35,7 +38,7 @@ function DictionaryListItem({ name, deleteDictionary }) {
       </ListItemAvatar>
       <ListItemText primary={name} />
       <ListItemSecondaryAction className={classes.secondaryAction}>
-        <ErrorSummary name={name} />
+        {showErrorSummary && <ErrorSummary name={name} />}
         <DeleteDictionaryButton name={name} className={classes.delete} />
       </ListItemSecondaryAction>
     </ListItem>
