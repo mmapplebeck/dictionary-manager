@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ea256949d01a16217af8a6aecc200037",
+    "revision": "9f16bf60e034f6c2539e1bacc365033d",
     "url": "/dictionary-manager/index.html"
   },
   {
-    "revision": "787a57a2523275a01132",
+    "revision": "ce79d425c752d458b08c",
     "url": "/dictionary-manager/static/css/main.5ecd60fb.chunk.css"
   },
   {
-    "revision": "af32d7ff16da50b4cb36",
-    "url": "/dictionary-manager/static/js/2.0a40ba2b.chunk.js"
+    "revision": "23fbd0904e68b2afec62",
+    "url": "/dictionary-manager/static/js/2.6cf3dfd4.chunk.js"
   },
   {
     "revision": "764ee7d7b2b37ea6ad2fc352f6f4060b",
-    "url": "/dictionary-manager/static/js/2.0a40ba2b.chunk.js.LICENSE"
+    "url": "/dictionary-manager/static/js/2.6cf3dfd4.chunk.js.LICENSE"
   },
   {
-    "revision": "787a57a2523275a01132",
-    "url": "/dictionary-manager/static/js/main.5d014e8e.chunk.js"
+    "revision": "ce79d425c752d458b08c",
+    "url": "/dictionary-manager/static/js/main.ab6378b2.chunk.js"
   },
   {
     "revision": "61ae9075cf8df2f1b634",
