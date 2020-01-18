@@ -40,6 +40,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 - **material-table** to support the dictionary items table
 - **gh-pages** for deployment to Github Pages
 - **Jest** for unit tests
+- **Prettier** for code formatting
 
 ## Tests
 
