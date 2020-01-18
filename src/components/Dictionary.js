@@ -50,6 +50,7 @@ function Dictionary({
                 {...props}
                 error={shouldShowError}
                 helperText={shouldShowError && blankFieldError}
+                fullWidth
               />
             );
           }
