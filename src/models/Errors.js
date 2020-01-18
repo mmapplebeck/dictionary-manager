@@ -1,35 +1,26 @@
+import { Record } from "immutable";
+
 export const ErrorLevels = {
   error: "error",
   warning: "warning"
 };
 
-class Error {
-  constructor(name, severity) {
-    this.name = name;
-    this.level = severity;
-  }
-}
+export const CycleError = Record({
+  name: "Cycle",
+  level: ErrorLevels.error
+});
 
-export class CycleError extends Error {
-  constructor() {
-    super("Cycle", ErrorLevels.error);
-  }
-}
+export const ChainError = Record({
+  name: "Chain",
+  level: ErrorLevels.warning
+});
 
-export class ChainError extends Error {
-  constructor() {
-    super("Chain", ErrorLevels.warning);
-  }
-}
+export const ForkError = Record({
+  name: "Fork",
+  level: ErrorLevels.warning
+});
 
-export class ForkError extends Error {
-  constructor() {
-    super("Fork", ErrorLevels.warning);
-  }
-}
-
-export class DuplicateError extends Error {
-  constructor() {
-    super("Duplicate", ErrorLevels.warning);
-  }
-}
+export const DuplicateError = Record({
+  name: "Duplicate",
+  level: ErrorLevels.warning
+});

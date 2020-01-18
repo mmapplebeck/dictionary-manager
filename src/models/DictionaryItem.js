@@ -2,7 +2,8 @@ import { Record } from "immutable";
 
 export const DictionaryItem = Record({
   domain: "",
-  range: ""
+  range: "",
+  error: null
 });
 
 export default DictionaryItem;

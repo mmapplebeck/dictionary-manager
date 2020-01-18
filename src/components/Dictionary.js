@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import OptionalErrorIcon from "./OptionalErrorIcon";
-import { addErrors } from "../validateDictionaryItems";
 import tableIcons from "../tableIcons";
 import DictionaryModel from "../models/Dictionary";
 import { getDictionaryByUrl } from "../selectors";
@@ -23,11 +22,8 @@ function Dictionary({
   updateDictionaryItem,
   deleteDictionaryItem
 }) {
-  // Attempting to reduce the expense of converting immutable structures to JS and calculating errors with memoization
-  const itemsAsArrayWithErrors = useMemo(
-    () => addErrors(dictionary.items.toJS()),
-    [dictionary]
-  );
+  // Attempting to reduce the expense of converting immutable structures to JS with memoization
+  const items = useMemo(() => dictionary.items.toJS(), [dictionary]);
 
   return (
     <MaterialTable
@@ -70,7 +66,7 @@ function Dictionary({
           actions: ""
         }
       }}
-      data={itemsAsArrayWithErrors}
+      data={items}
       editable={{
         onRowAdd: ({ domain, range }) =>
           new Promise((resolve, reject) => {
@@ -88,14 +84,14 @@ function Dictionary({
               // Maintain edit mode if there is a blank field
               reject();
             } else {
-              const index = itemsAsArrayWithErrors.indexOf(oldData);
+              const index = items.indexOf(oldData);
               updateDictionaryItem(dictionary.name, index, domain, range);
               resolve();
             }
           }),
         onRowDelete: oldData =>
           new Promise((resolve, reject) => {
-            const index = itemsAsArrayWithErrors.indexOf(oldData);
+            const index = items.indexOf(oldData);
             deleteDictionaryItem(dictionary.name, index);
             resolve();
           })

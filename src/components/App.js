@@ -30,7 +30,7 @@ function App() {
   const classes = useStyles();
 
   return (
-    <Router>
+    <Router basename="/dictionary-manager">
       <div className={classes.root}>
         <CssBaseline />
         <AppHeader />

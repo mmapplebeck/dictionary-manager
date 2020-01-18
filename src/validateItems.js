@@ -1,9 +1,9 @@
+import { List, Map } from "immutable";
+
 // Necessary to maintain spy reference in unit tests
 // https://stackoverflow.com/questions/45111198/how-to-mock-functions-in-the-same-module-using-jest
-import * as thisModule from "./validateDictionaryItems";
-
+import * as thisModule from "./validateItems";
 import {
-  ErrorLevels,
   CycleError,
   ChainError,
   ForkError,
@@ -14,40 +14,39 @@ export const validateItem = (item, domains, rangesByDomain) => {
   // Check for errors in order of my percieved severity
   let error = null;
   // If this item's range is also an existing domain, it must be either a cycle or a chain
-  if (domains.has(item.range)) {
+  if (domains.get(item.range)) {
     // If a domain exists that maps to this item's domain, there is a cycle, otherwise it must be a chain
-    if (rangesByDomain[item.range].includes(item.domain)) {
-      error = new CycleError();
+    if (rangesByDomain.get(item.range).contains(item.domain)) {
+      error = CycleError();
     } else {
-      error = new ChainError();
+      error = ChainError();
     }
     // If multiple range values are mapped to this item's domain value, it must be either a fork or a duplicate
-  } else if (rangesByDomain[item.domain].length > 1) {
+  } else if (rangesByDomain.get(item.domain).size > 1) {
     // If all mapped ranges are unique, there is a fork, otherwise there must be a duplicate
-    if (new Set(rangesByDomain[item.domain]).size > 1) {
-      error = new ForkError();
+    if (rangesByDomain.get(item.domain).toSet().size > 1) {
+      error = ForkError();
     } else {
-      error = new DuplicateError();
+      error = DuplicateError();
     }
   }
   return error;
 };
 
-export const addErrors = items => {
+export const validateItems = items => {
   // Get a set of all domains
-  const domains = new Set(items.map(item => item.domain));
+  const domains = items.map(item => item.domain).toSet();
   // Group ranges by their domain
-  const rangesByDomain = items.reduce((acc, item) => {
-    if (!acc[item.domain]) {
-      acc[item.domain] = [];
+  const rangesByDomain = items.reduce((reduced, item) => {
+    if (!reduced.get(item.domain)) {
+      return reduced.set(item.domain, List([item.range]));
     }
-    acc[item.domain].push(item.range);
-    return acc;
-  }, {});
-
+    return reduced.update(item.domain, ranges => ranges.push(item.range));
+  }, Map());
   // Augment every item with any errors
-  return items.map(item => ({
-    ...item,
-    error: thisModule.validateItem(item, domains, rangesByDomain)
-  }));
+  return items.map(item =>
+    item.update("error", () =>
+      thisModule.validateItem(item, domains, rangesByDomain)
+    )
+  );
 };
