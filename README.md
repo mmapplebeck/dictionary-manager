@@ -18,12 +18,6 @@ git clone git@github.com:mmapplebeck/dictionary-manager.git
 cd dictionary-manager
 ```
 
-Switch to the `master` branch:
-
-```
-git checkout --track origin/master
-```
-
 Install dependencies and start the app:
 
 ```
