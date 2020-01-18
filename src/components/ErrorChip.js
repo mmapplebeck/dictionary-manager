@@ -10,47 +10,44 @@ import { ErrorLevels } from "../models/Errors";
 const useStyles = makeStyles(theme => {
   const errorColor = theme.palette.error.dark;
   const warningColor = theme.palette.warning.dark;
-  const isError = item =>
-    item && item.error && item.error.level === ErrorLevels.error;
+  const isErrorLevel = level => level === ErrorLevels.error;
 
   return {
     chip: props => ({
-      color: isError(props.item) ? errorColor : warningColor,
-      borderColor: isError(props.item) ? errorColor : warningColor
+      color: isErrorLevel(props.level) ? errorColor : warningColor,
+      borderColor: isErrorLevel(props.level) ? errorColor : warningColor
     }),
     icon: props => ({
-      color: isError(props.item) ? errorColor : warningColor
+      color: isErrorLevel(props.level) ? errorColor : warningColor
     })
   };
 });
 
-function OptionalErrorIcon({ item }) {
+function ErrorChip({ level, label, className }) {
   const classes = useStyles({
-    item
+    level
   });
-
-  if (!item || !item.error) {
-    return null;
-  }
 
   return (
     <Chip
       icon={
-        item.error.level === ErrorLevels.error ? (
+        level === ErrorLevels.error ? (
           <ErrorIcon className={classes.icon} />
         ) : (
           <WarningIcon className={classes.icon} />
         )
       }
-      label={item.error.name}
+      label={label}
       variant="outlined"
-      className={classes.chip}
+      className={`${className} ${classes.chip}`}
     />
   );
 }
 
-OptionalErrorIcon.propTypes = {
-  item: PropTypes.object
+ErrorChip.propTypes = {
+  level: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  className: PropTypes.string
 };
 
-export default OptionalErrorIcon;
+export default ErrorChip;

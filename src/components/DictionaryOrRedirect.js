@@ -5,7 +5,7 @@ import { withRouter, Redirect } from "react-router-dom";
 
 import Dictionary from "./Dictionary";
 import DictionaryModel from "../models/Dictionary";
-import { getDictionaryByUrl } from "../selectors";
+import { getDictionaryByName } from "../selectors";
 
 function DictionaryOrRedirect({ dictionary }) {
   if (!dictionary) {
@@ -20,6 +20,6 @@ DictionaryOrRedirect.propTypes = {
 
 export default withRouter(
   connect((state, { match }) => ({
-    dictionary: getDictionaryByUrl(state, match.params.name)
+    dictionary: getDictionaryByName(state, match.params.name)
   }))(DictionaryOrRedirect)
 );

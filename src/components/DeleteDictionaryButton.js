@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import Dialog from "./Dialog";
 import { deleteDictionary } from "../actions";
 
-function DeleteDictionaryButton({ name, deleteDictionary }) {
+function DeleteDictionaryButton({ name, deleteDictionary, className }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -26,7 +26,7 @@ function DeleteDictionaryButton({ name, deleteDictionary }) {
   };
 
   return (
-    <>
+    <div className={className}>
       <Tooltip title="Delete" aria-label="delete">
         <IconButton onClick={handleClickOpen}>
           <DeleteIcon />
@@ -48,13 +48,14 @@ function DeleteDictionaryButton({ name, deleteDictionary }) {
         open={open}
         onClose={handleClose}
       />
-    </>
+    </div>
   );
 }
 
 DeleteDictionaryButton.propTypes = {
   name: PropTypes.string.isRequired,
-  deleteDictionary: PropTypes.func.isRequired
+  deleteDictionary: PropTypes.func.isRequired,
+  className: PropTypes.string
 };
 
 export default connect(null, (dispatch, { name }) => ({

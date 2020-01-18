@@ -7,11 +7,25 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import DictionaryIcon from "@material-ui/icons/Description";
 import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 
 import DeleteDictionaryButton from "./DeleteDictionaryButton";
 import { getDictionaryRoute } from "../routes";
+import ErrorSummary from "./ErrorSummary";
+
+const useStyles = makeStyles(theme => ({
+  secondaryAction: {
+    display: "flex",
+    alignItems: "center"
+  },
+  delete: {
+    marginLeft: theme.spacing(1)
+  }
+}));
 
 function DictionaryListItem({ name, deleteDictionary }) {
+  const classes = useStyles();
+
   return (
     <ListItem button component={Link} to={getDictionaryRoute(name)}>
       <ListItemAvatar>
@@ -20,8 +34,9 @@ function DictionaryListItem({ name, deleteDictionary }) {
         </Avatar>
       </ListItemAvatar>
       <ListItemText primary={name} />
-      <ListItemSecondaryAction>
-        <DeleteDictionaryButton name={name} />
+      <ListItemSecondaryAction className={classes.secondaryAction}>
+        <ErrorSummary name={name} />
+        <DeleteDictionaryButton name={name} className={classes.delete} />
       </ListItemSecondaryAction>
     </ListItem>
   );

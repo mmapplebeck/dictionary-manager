@@ -4,10 +4,15 @@ import MaterialTable, { MTableEditField } from "material-table";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import OptionalErrorIcon from "./OptionalErrorIcon";
+import ErrorSummary from "./ErrorSummary";
+import ErrorChip from "./ErrorChip";
 import tableIcons from "../tableIcons";
 import DictionaryModel from "../models/Dictionary";
-import { getDictionaryByUrl } from "../selectors";
+import {
+  getDictionaryByName,
+  getErrorCount,
+  getWarningCount
+} from "../selectors";
 import {
   addDictionaryItem,
   updateDictionaryItem,
@@ -26,77 +31,84 @@ function Dictionary({
   const items = useMemo(() => dictionary.items.toJS(), [dictionary]);
 
   return (
-    <MaterialTable
-      options={{
-        showTitle: false,
-        paging: false,
-        search: dictionary.items.size > 0,
-        actionsColumnIndex: 2
-      }}
-      components={{
-        Container: props => <div {...props}></div>,
-        EditField: props => {
-          const { value } = props;
-          const shouldShowError = !value;
-          return (
-            <MTableEditField
-              {...props}
-              error={shouldShowError}
-              helperText={shouldShowError && blankFieldError}
-            />
-          );
-        }
-      }}
-      icons={tableIcons}
-      columns={[
-        { title: "Domain", field: "domain" },
-        { title: "Range", field: "range" },
-        {
-          field: "error",
-          editable: "never",
-          render: item => <OptionalErrorIcon item={item} />
-        }
-      ]}
-      localization={{
-        body: {
-          emptyDataSourceMessage:
-            "You have no dictionary items. Create an item to start populating this dictionary."
-        },
-        header: {
-          actions: ""
-        }
-      }}
-      data={items}
-      editable={{
-        onRowAdd: ({ domain, range }) =>
-          new Promise((resolve, reject) => {
-            if (!domain || !range) {
-              // Maintain edit mode if there is a blank field
-              reject();
-            } else {
-              addDictionaryItem(dictionary.name, domain, range);
-              resolve();
-            }
-          }),
-        onRowUpdate: ({ domain, range }, oldData) =>
-          new Promise((resolve, reject) => {
-            if (!domain || !range) {
-              // Maintain edit mode if there is a blank field
-              reject();
-            } else {
+    <>
+      <ErrorSummary name={dictionary.name} />
+      <MaterialTable
+        options={{
+          showTitle: false,
+          paging: false,
+          search: dictionary.items.size > 0,
+          actionsColumnIndex: 2
+        }}
+        components={{
+          Container: props => <div {...props}></div>,
+          EditField: props => {
+            const { value } = props;
+            const shouldShowError = !value;
+            return (
+              <MTableEditField
+                {...props}
+                error={shouldShowError}
+                helperText={shouldShowError && blankFieldError}
+              />
+            );
+          }
+        }}
+        icons={tableIcons}
+        columns={[
+          { title: "Domain", field: "domain" },
+          { title: "Range", field: "range" },
+          {
+            field: "error",
+            editable: "never",
+            sorting: false,
+            render: item =>
+              item && item.error ? (
+                <ErrorChip level={item.error.level} label={item.error.name} />
+              ) : null
+          }
+        ]}
+        localization={{
+          body: {
+            emptyDataSourceMessage:
+              "You have no dictionary items. Create an item to start populating this dictionary."
+          },
+          header: {
+            actions: ""
+          }
+        }}
+        data={items}
+        editable={{
+          onRowAdd: ({ domain, range }) =>
+            new Promise((resolve, reject) => {
+              if (!domain || !range) {
+                // Maintain edit mode if there is a blank field
+                reject();
+              } else {
+                addDictionaryItem(dictionary.name, domain, range);
+                resolve();
+              }
+            }),
+          onRowUpdate: ({ domain, range }, oldData) =>
+            new Promise((resolve, reject) => {
+              if (!domain || !range) {
+                // Maintain edit mode if there is a blank field
+                reject();
+              } else {
+                const index = items.indexOf(oldData);
+                updateDictionaryItem(dictionary.name, index, domain, range);
+                resolve();
+              }
+            }),
+          onRowDelete: oldData =>
+            new Promise((resolve, reject) => {
               const index = items.indexOf(oldData);
-              updateDictionaryItem(dictionary.name, index, domain, range);
+              deleteDictionaryItem(dictionary.name, index);
               resolve();
-            }
-          }),
-        onRowDelete: oldData =>
-          new Promise((resolve, reject) => {
-            const index = items.indexOf(oldData);
-            deleteDictionaryItem(dictionary.name, index);
-            resolve();
-          })
-      }}
-    />
+            })
+        }}
+      />
+    </>
   );
 }
 
@@ -110,7 +122,7 @@ Dictionary.propTypes = {
 export default withRouter(
   connect(
     (state, { match }) => ({
-      dictionary: getDictionaryByUrl(state, match.params.name)
+      dictionary: getDictionaryByName(state, match.params.name)
     }),
     dispatch => ({
       addDictionaryItem: (name, domain, range) =>
