@@ -1,75 +1,82 @@
 # Dictionary Manager
 
-A single page application to create dictionaries containing domain range mappings.
+A single page React application to create dictionaries and manage domain range mappings.
 
 ## Live Demo
 
-This project build is hosted on Github pages: https://mmapplebeck.github.io/dictionary-manager/
-The project is built and deployed to this repo's [gh-pages branch](https://github.com/mmapplebeck/dictionary-manager/tree/gh-pages) using [gh-pages](https://github.com/tschaub/gh-pages).
+The project build is hosted on Github pages: https://mmapplebeck.github.io/dictionary-manager/
 
-## Available Scripts
+The project is built and deployed to the [gh-pages branch](https://github.com/mmapplebeck/dictionary-manager/tree/gh-pages) using [gh-pages](https://github.com/tschaub/gh-pages).
 
-In the project directory, you can run:
+## Running Locally
 
-### `yarn start`
+Clone the project locally:
 
-Runs the app in the development mode.<br />
+```
+git clone git@github.com:mmapplebeck/dictionary-manager.git
+
+cd dictionary-manager
+```
+
+Switch to the `master` branch:
+
+```
+git checkout --track origin/master
+```
+
+Install dependencies and start the app:
+
+```
+yarn install
+
+yarn start
+```
+
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Technologies Used
 
-### `yarn test`
+- **Create React App** for initial bootstrap
+- **Redux** for application state
+- **Immutable.js** for immutable data structures
+- **Redux Thunk** for dispatching multiple actions from a single action creator. I used this to validate all dictionary items after adding, updating, or deleting a dictionary item
+- **Reselect** for derived state data (e.g. current dictionary, error count, etc.)
+- **React Router** for application routing
+- **Material-UI** for the pattern library. This gives the application some styling consistincy, responsiveness, and gave me some base components to leverage.
+- **material-table** to support the dictionary items table
+- **gh-pages** for deployment to Github Pages
+- **Jest** for unit tests
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Tests
 
-### `yarn build`
+I added a Jest test suite to support dictionary item validation.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To launch the test runner in interactive watch mode:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
+yarn test
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+I would have also liked to add Enzyme tests for some components but did not get to it.
 
-### `yarn eject`
+## Item Validation
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+I made some assumptions about how dictionary item validation should work since the assignment description was brief. If this was a real project, I would fully flesh out those details before starting work. My assumptions are as follows:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The order of error severity is: Cycle > Chain > Fork > Duplicate.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Cycles are the most serious error, with level "error". Chains, Forks, and Duplicates are level "warning".
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+If a dictionary item causes multiple errors, it will be marked with the error type with highest severity.
 
-## Learn More
+## Future Additions
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Some thoughts on possible additions:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Enzyme tests for components
+- Local storage for saving/loading application state
+- Editing dictionary names
+- Internationalization
+- Accessibility audit
+- Cross-browser & cross-device testing
+- Branding and styling updates
