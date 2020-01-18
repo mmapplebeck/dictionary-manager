@@ -67,6 +67,7 @@ If a dictionary item causes multiple errors, it will be marked with the error ty
 
 Some thoughts on possible additions:
 
+- TypeScript for static type-checking
 - Enzyme tests for components
 - Local storage for saving/loading application state
 - Editing dictionary names
