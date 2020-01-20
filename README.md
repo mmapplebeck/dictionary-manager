@@ -54,23 +54,12 @@ yarn test
 
 I would have also liked to add Enzyme tests for some components but did not get to it.
 
-## Item Validation
-
-I made some assumptions about how dictionary item validation should work since the assignment description was brief. If this was a real project, I would fully flesh out those details before starting work. My assumptions are as follows:
-
-The order of error severity is: Cycle > Chain > Fork > Duplicate.
-
-Cycles are the most serious error, with level "error". Chains, Forks, and Duplicates are level "warning".
-
-If a dictionary item causes multiple errors, it will be marked with the error type with highest severity.
-
 ## Future Additions
 
 Some thoughts on possible additions:
 
 - TypeScript for static type-checking
 - Enzyme tests for components
-- Local storage for saving/loading application state
 - Editing dictionary names
 - Internationalization
 - Accessibility audit
