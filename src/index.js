@@ -4,11 +4,16 @@ import "./index.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import { Map } from "immutable";
 
+import { loadState, saveState } from "./localStorage";
 import configureStore from "./configureStore";
 
-const store = configureStore(Map());
+const persistedState = loadState();
+
+const store = configureStore(persistedState);
+store.subscribe(() => {
+  saveState(store.getState());
+});
 
 ReactDOM.render(
   <Provider store={store}>

@@ -1,4 +1,4 @@
-import { List } from "immutable";
+import { List, Map } from "immutable";
 import { combineReducers } from "redux-immutable";
 
 import Dictionary from "./models/Dictionary";
@@ -12,6 +12,10 @@ import {
   VALIDATE_DICTIONARY_ITEMS
 } from "./actions";
 import { validateItems } from "./validateItems";
+
+export const emptyState = Map({
+  dictionaries: List()
+});
 
 function dictionaryItems(state = List(), action, dictionaries) {
   switch (action.type) {

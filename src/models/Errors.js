@@ -5,6 +5,11 @@ export const ErrorLevels = {
   warning: "warning"
 };
 
+export const Error = Record({
+  name: "",
+  level: ""
+});
+
 export const CycleError = Record({
   name: "Cycle",
   level: ErrorLevels.error

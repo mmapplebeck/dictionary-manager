@@ -1,4 +1,6 @@
 import { createSelector } from "reselect";
+import { List } from "immutable";
+
 import { ErrorLevels } from "./models/Errors";
 
 export const getDictionaries = state => state.get("dictionaries");
@@ -6,11 +8,6 @@ export const getDictionaries = state => state.get("dictionaries");
 export const getDictionaryNames = createSelector(
   getDictionaries,
   dictionaries => dictionaries.map(d => d.name)
-);
-
-export const getLatestDictionary = createSelector(
-  getDictionaries,
-  dictionaries => dictionaries.last() || null
 );
 
 export const getDictionaryByName = createSelector(
@@ -22,7 +19,7 @@ export const getDictionaryByName = createSelector(
 
 export const getDictionaryItems = createSelector(
   getDictionaryByName,
-  dictionary => dictionary.items
+  dictionary => (dictionary ? dictionary.items : List())
 );
 
 export const getErrorCount = createSelector(
