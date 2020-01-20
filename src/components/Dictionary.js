@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import MaterialTable, { MTableEditField } from "material-table";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 
 import ErrorSummary from "./ErrorSummary";
 import ErrorChip from "./ErrorChip";
@@ -14,8 +15,48 @@ import {
   updateDictionaryItem,
   deleteDictionaryItem
 } from "../actions";
+import { ErrorLevels } from "../models/Errors";
 
 const blankFieldError = "Field cannot be blank";
+
+const useStyles = makeStyles(theme => ({
+  warning: {
+    marginLeft: theme.spacing(1)
+  }
+}));
+
+function RowErrors({ item }) {
+  const classes = useStyles();
+
+  if (!item || !item.errors || item.errors.length === 0) {
+    return null;
+  }
+  const errorNames = item.errors
+    .filter(e => e.level === ErrorLevels.error)
+    .map(e => e.name)
+    .join(", ");
+  const warningNames = item.errors
+    .filter(e => e.level === ErrorLevels.warning)
+    .map(e => e.name)
+    .join(", ");
+
+  return (
+    <>
+      {errorNames && <ErrorChip level={ErrorLevels.error} label={errorNames} />}
+      {warningNames && (
+        <ErrorChip
+          level={ErrorLevels.warning}
+          label={warningNames}
+          className={errorNames ? classes.warning : ""}
+        />
+      )}
+    </>
+  );
+}
+
+RowErrors.propTypes = {
+  item: PropTypes.object
+};
 
 function Dictionary({
   dictionary,
@@ -59,10 +100,7 @@ function Dictionary({
             field: "error",
             editable: "never",
             sorting: false,
-            render: item =>
-              item && item.error ? (
-                <ErrorChip level={item.error.level} label={item.error.name} />
-              ) : null
+            render: item => <RowErrors item={item} />
           }
         ]}
         localization={{

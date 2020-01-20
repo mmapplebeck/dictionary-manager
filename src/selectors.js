@@ -22,16 +22,24 @@ export const getDictionaryItems = createSelector(
   dictionary => (dictionary ? dictionary.items : List())
 );
 
-export const getErrorCount = createSelector(
-  getDictionaryItems,
-  items =>
-    items.filter(item => item.error && item.error.level === ErrorLevels.error)
-      .size
+export const getErrorCount = createSelector(getDictionaryItems, items =>
+  items.reduce(
+    (sum, item) =>
+      sum +
+      (item.errors
+        ? item.errors.filter(e => e.level === ErrorLevels.error).size
+        : 0),
+    0
+  )
 );
 
-export const getWarningCount = createSelector(
-  getDictionaryItems,
-  items =>
-    items.filter(item => item.error && item.error.level === ErrorLevels.warning)
-      .size
+export const getWarningCount = createSelector(getDictionaryItems, items =>
+  items.reduce(
+    (sum, item) =>
+      sum +
+      (item.errors
+        ? item.errors.filter(e => e.level === ErrorLevels.warning).size
+        : 0),
+    0
+  )
 );

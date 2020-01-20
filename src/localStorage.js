@@ -18,12 +18,16 @@ const transform = stateAsJson =>
               DictionaryItem({
                 domain: i.domain,
                 range: i.range,
-                error: i.error
-                  ? Error({
-                      name: i.error.name,
-                      level: i.error.level
-                    })
-                  : null
+                errors: List(
+                  i.errors.map(e =>
+                    e
+                      ? Error({
+                          name: e.name,
+                          level: e.level
+                        })
+                      : null
+                  )
+                )
               })
             )
           )

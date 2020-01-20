@@ -17,7 +17,7 @@ export const emptyState = Map({
   dictionaries: List()
 });
 
-function dictionaryItems(state = List(), action, dictionaries) {
+function dictionaryItems(state = List(), action) {
   switch (action.type) {
     case ADD_DICTIONARY_ITEM:
       return state.push(

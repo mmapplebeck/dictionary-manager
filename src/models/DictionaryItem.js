@@ -1,9 +1,9 @@
-import { Record } from "immutable";
+import { Record, List } from "immutable";
 
 export const DictionaryItem = Record({
   domain: "",
   range: "",
-  error: null
+  errors: List()
 });
 
 export default DictionaryItem;
