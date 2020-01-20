@@ -1,5 +1,11 @@
 import { Record } from "immutable";
 
+export const ErrorNames = {
+  cycle: "Cycle",
+  chain: "Chain",
+  fork: "Fork",
+  duplicate: "Duplicate"
+};
 export const ErrorLevels = {
   error: "error",
   warning: "warning"
@@ -8,24 +14,4 @@ export const ErrorLevels = {
 export const Error = Record({
   name: "",
   level: ""
-});
-
-export const CycleError = Record({
-  name: "Cycle",
-  level: ErrorLevels.error
-});
-
-export const ChainError = Record({
-  name: "Chain",
-  level: ErrorLevels.warning
-});
-
-export const ForkError = Record({
-  name: "Fork",
-  level: ErrorLevels.warning
-});
-
-export const DuplicateError = Record({
-  name: "Duplicate",
-  level: ErrorLevels.warning
 });

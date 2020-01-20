@@ -3,44 +3,69 @@ import { List, Map } from "immutable";
 // Necessary to maintain spy reference in unit tests
 // https://stackoverflow.com/questions/45111198/how-to-mock-functions-in-the-same-module-using-jest
 import * as thisModule from "./validateItems";
-import {
-  CycleError,
-  ChainError,
-  ForkError,
-  DuplicateError
-} from "./models/Errors";
+import { Error, ErrorNames, ErrorLevels } from "./models/Errors";
 
 export const validateItem = (item, rangesByDomain, domainsByRange) => {
   let errors = [];
 
-  // If when using the range as a domain, you find the range again, there is a cycle
+  const rangesWhenItemRangeIsDomain = rangesByDomain.get(item.range)
+    ? rangesByDomain.get(item.range).toSet()
+    : null;
+  const domainsWhenItemDomainIsRange = domainsByRange.get(item.domain)
+    ? domainsByRange.get(item.domain).toSet()
+    : null;
+
+  // If when using the item's range as a domain, you find the item's range again, there is a cycle
   if (
-    rangesByDomain.get(item.range) &&
-    rangesByDomain.get(item.range).contains(item.domain)
+    rangesWhenItemRangeIsDomain &&
+    rangesWhenItemRangeIsDomain.has(item.domain)
   ) {
-    errors.push(CycleError());
+    errors.push(
+      Error({
+        name: ErrorNames.cycle,
+        level: ErrorLevels.error
+      })
+    );
   }
 
-  // If when using the range as a domain, or the domain as a range, you get multiple matches, there is a chain
+  // If when using the item's range as a domain, and you find a value other than the item's domain (which would be a cycle), there is a chain
+  // If when using the item's domain as a range, and you find a value other than the item's range (which would be a cycle), there is a chain
   if (
-    (rangesByDomain.get(item.range) &&
-      rangesByDomain.get(item.range).toSet().size > 1) ||
-    (domainsByRange.get(item.domain) &&
-      !domainsByRange.get(item.domain).toSet().size > 1)
+    (rangesWhenItemRangeIsDomain &&
+      (!rangesWhenItemRangeIsDomain.has(item.domain) ||
+        rangesWhenItemRangeIsDomain.size > 1)) ||
+    (domainsWhenItemDomainIsRange &&
+      (!domainsWhenItemDomainIsRange.has(item.range) ||
+        domainsWhenItemDomainIsRange.size > 1))
   ) {
-    errors.push(ChainError());
+    errors.push(
+      Error({
+        name: ErrorNames.chain,
+        level: ErrorLevels.warning
+      })
+    );
   }
 
   const rangeCounts = rangesByDomain.get(item.domain).countBy(r => r);
 
-  // If this domain has multiple unique ranges there is a fork
+  // If this domain has multiple unique ranges associated, there is a fork
   if (rangeCounts.size > 1) {
-    errors.push(ForkError());
+    errors.push(
+      Error({
+        name: ErrorNames.fork,
+        level: ErrorLevels.warning
+      })
+    );
   }
 
   // If this domain has multiple matches for this range, there is a duplicate
   if (rangeCounts.get(item.range) > 1) {
-    errors.push(DuplicateError());
+    errors.push(
+      Error({
+        name: ErrorNames.duplicate,
+        level: ErrorLevels.warning
+      })
+    );
   }
 
   return List(errors);
@@ -54,14 +79,13 @@ export const validateItems = items => {
     }
     return reduced.update(item.domain, ranges => ranges.push(item.range));
   }, Map());
-  // Group domains by their ranges
+  // Group domains by their range
   const domainsByRange = items.reduce((reduced, item) => {
     if (!reduced.get(item.range)) {
       return reduced.set(item.range, List([item.domain]));
     }
     return reduced.update(item.range, ranges => ranges.push(item.domain));
   }, Map());
-  // Augment every item with any errors
   return items.map(item =>
     item.update("errors", () =>
       thisModule.validateItem(item, rangesByDomain, domainsByRange)
