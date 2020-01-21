@@ -31,7 +31,7 @@ function App() {
   const classes = useStyles();
 
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <div className={classes.root}>
         <CssBaseline />
         <AppHeader />
