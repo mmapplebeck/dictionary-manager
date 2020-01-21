@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/dictionary-manager/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/dictionary-manager/static/js/main.559c19b1.chunk.js",
-    "main.js.map": "/dictionary-manager/static/js/main.559c19b1.chunk.js.map",
+    "main.js": "/dictionary-manager/static/js/main.7251ffa6.chunk.js",
+    "main.js.map": "/dictionary-manager/static/js/main.7251ffa6.chunk.js.map",
     "runtime-main.js": "/dictionary-manager/static/js/runtime-main.1a9e8b2d.js",
     "runtime-main.js.map": "/dictionary-manager/static/js/runtime-main.1a9e8b2d.js.map",
     "static/js/2.ef7ed6ba.chunk.js": "/dictionary-manager/static/js/2.ef7ed6ba.chunk.js",
     "static/js/2.ef7ed6ba.chunk.js.map": "/dictionary-manager/static/js/2.ef7ed6ba.chunk.js.map",
     "index.html": "/dictionary-manager/index.html",
-    "precache-manifest.50abbe563c12bd40f78ee05e24838361.js": "/dictionary-manager/precache-manifest.50abbe563c12bd40f78ee05e24838361.js",
+    "precache-manifest.afa4a04b3993b99be9b5df2a51cc7afa.js": "/dictionary-manager/precache-manifest.afa4a04b3993b99be9b5df2a51cc7afa.js",
     "service-worker.js": "/dictionary-manager/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/dictionary-manager/static/css/main.5ecd60fb.chunk.css.map",
     "static/js/2.ef7ed6ba.chunk.js.LICENSE": "/dictionary-manager/static/js/2.ef7ed6ba.chunk.js.LICENSE"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.1a9e8b2d.js",
     "static/js/2.ef7ed6ba.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.559c19b1.chunk.js"
+    "static/js/main.7251ffa6.chunk.js"
   ]
 }
