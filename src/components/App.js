@@ -31,7 +31,7 @@ function App() {
   const classes = useStyles();
 
   return (
-    <Router basename="/dictionary-manager">
+    <Router basename={process.env.PUBLIC_URL}>
       <div className={classes.root}>
         <CssBaseline />
         <AppHeader />
